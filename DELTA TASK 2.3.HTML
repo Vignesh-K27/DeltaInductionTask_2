@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<HTML>
+<body style="background-color:black;" onload="start( )">
+<canvas id="canvas" width="2000" height="400"></canvas>
+<script>
+var game;
+var x=10;
+var y=225;
+var j=500;
+var a= 50;
+var b=225;
+var k=0;
+var l=0;
+var s=0;
+var music;
+var sound1;
+var score;
+function restart( )
+{
+q.stop( );
+q.clear( );
+k=0;
+j=500;
+start( );
+}
+function sound(src)
+{
+this.sound=document.createElement("audio");
+this.sound.src=src;
+this.sound.setAttribute("preload","auto");
+this.sound.setAttribute("controls","none");
+l++;
+if(l%2==1)
+this.sound.loop=true;
+this.sound.style.display="none";
+document.body.appendChild(this.sound);
+this.play=function( ){
+this.sound.play( );
+}
+this.stop=function( ){ 
+this.sound.pause( );
+}
+}
+var q={
+canvas:document.getElementById("canvas"),
+start:function( )
+{
+this.canvas.style.cursor="none";
+this.context=this.canvas.getContext("2d");
+document.body.insertBefore(this.canvas,document.body.childNodes[0]);
+this.interval=setInterval(update1,15);
+window.addEventListener("mousemove",function(e)
+{
+if((e.pageX>0 && e.pageX<2000) && (e.pageY>50 && e.pageY<400))
+{
+q.x=e.pageX;
+q.y=e.pageY;
+}
+})
+},
+clear:function( )
+{
+this.context.clearRect(0,0,2000,400);
+},
+stop:function( )
+{
+clearInterval(this.interval);
+s++;
+if(s%2==1)
+{
+var r=alert("Game Over.Click On Restart To Play Once Again");
+document.getElementById("button").style.visibility='visible';
+}
+}
+}
+function update1( )
+{
+k++;
+q.clear( );
+if(q.x && q.y)
+{
+game.x=q.x;
+game.y=q.y;
+}
+score.text="SCORE:"+k;
+score.update( );
+game.update( );
+}
+function create(x,y,type=0,width=0,height=0)
+{
+let cy=document.getElementById("canvas").getContext("2d");
+cy.beginPath( );
+cy.moveTo(0,50);
+cy.lineTo(2000,50);
+cy.lineWidth=5;
+cy.strokeStyle = "#FF1493";
+cy.stroke( );
+cy.beginPath( );
+cy.moveTo(0,400);
+cy.lineTo(2000,400);
+cy.lineWidth=5;
+cy.strokeStyle="#FF1493";
+cy.stroke( );
+this.x=x;
+this.y=y;
+this.type=type;
+this.update=function( )
+{
+let cy=document.getElementById("canvas").getContext("2d");
+cy.beginPath( );
+cy.moveTo(0,50);
+cy.lineTo(2000,50);
+cy.lineWidth=5;
+cy.strokeStyle="#FF1493";
+cy.stroke( );
+cy.beginPath( );
+cy.moveTo(0,400);
+cy.lineTo(2000,400);
+cy.lineWidth=5;
+cy.strokeStyle="#FF1493";
+cy.stroke( );
+if(this.type=="text")
+{
+this.width=width;
+this.height=height;
+ctx=q.context;
+ctx.font=this.width+" "+this.height;
+ctx.fillStyle="#FF1493";
+ctx.fillText(this.text,this.x,this.y);
+}
+else
+{
+cx=q.context;
+cx.beginPath( );
+cx.arc(this.x,this.y,5,0,7);
+cx.fillStyle="#FF1493";
+cx.fill( );
+cx.stroke( );
+cx.closePath( );
+if(j>0)
+{
+j--;
+}
+else
+{
+j=1050;
+a= Math.floor((Math.random()*140)+ 50); 
+b= Math.floor((Math.random()*135)+ 225); 
+}
+var ctx = q.context;
+ctx.fillStyle="rgb(0,200,0)";
+ctx.fillRect(j,50,5,a);
+ctx.fillRect(j,b,5,b);
+if(((this.x==(j-10)) || (this.x==(j+10)))&&((this.y<(60+a)) || (this.y>(b-10))))
+{
+sound1.play( );
+music.stop( );
+q.stop( );
+}
+}
+}
+}
+function start( )
+{
+game=new create(10,225);
+score=new create(10,30,"text","30px","Consolas");
+music=new sound("C:/Users/HOME/Downloads/Super-Mario-004-super-mario.mp3");
+sound1=new sound("C:/Users/HOME/Downloads/Super-Mario-011-mario.mp3");
+music.play( );
+document.getElementById("button").style.visibility='hidden';
+q.start( );
+}
+</script>
+<BUTTON id="button" ONCLICK="restart( )"  STYLE="BORDER:3PX SOLID RED; BACKGROUND-COLOR:PINK">RESTART</BUTTON>
+</body>
+</HTML>
